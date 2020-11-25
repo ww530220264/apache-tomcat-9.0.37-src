@@ -1342,12 +1342,12 @@ public class ContextConfig implements LifecycleListener {
                 WebXml.orderWebFragments(webXml, fragments, sContext);
 
         // Step 3. Look for ServletContainerInitializer implementations
-        if (ok) {
+        if (ok) { // 查找实现了ServletContainerInitializer的实现类
             processServletContainerInitializers();
         }
 
         if  (!webXml.isMetadataComplete() || typeInitializerMap.size() > 0) {
-            // Steps 4 & 5.
+            // Steps 4 & 5. // 解析WEB-INF/classess和WEB-INF/lib下的classes和jar中的SCI相关的类
             processClasses(webXml, orderedFragments);
         }
 
@@ -2332,7 +2332,7 @@ public class ContextConfig implements LifecycleListener {
 
         ClassParser parser = new ClassParser(is);
         JavaClass clazz = parser.parse();
-        checkHandlesTypes(clazz, javaClassCache);
+        checkHandlesTypes(clazz, javaClassCache); // 检查@HandleTypes类型
 
         if (handlesTypesOnly) {
             return;
@@ -2341,7 +2341,7 @@ public class ContextConfig implements LifecycleListener {
         processClass(fragment, clazz);
     }
 
-
+    // 处理@WebServlet @WebFilter @WebListener注解
     protected void processClass(WebXml fragment, JavaClass clazz) {
         AnnotationEntry[] annotationsEntries = clazz.getAnnotationEntries();
         if (annotationsEntries != null) {
